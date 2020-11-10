@@ -2,8 +2,19 @@
    require_once "_varios.php";
    $conexion= obtenerPdoConexionBD();
 
-   $sql= "SELECT id, nombre, telefono, categoria_id FROM persona order by nombre";
-   $sentencia= $conexion->prepare($sql);
+$sql = " 
+               SELECT
+                    p.id        AS pId,
+                    p.nombre    AS pNombre,
+                    c.id        AS cId,
+                    c.nombre    AS cNombre
+                FROM
+                   persona AS p INNER JOIN categoria AS c
+                   ON p.categoriaId = c.id
+                ORDER BY p.nombre
+        ";
+
+$sentencia= $conexion->prepare($sql);
    $sentencia->execute([]);
    $rs=$sentencia->fetchAll();
 ?>
@@ -21,10 +32,10 @@
     </tr>
     <?php foreach ($rs as $fila){ ?>
         <tr>
-            <td><a href=   "persona-ficha.php?id=<?=$fila["id"]?>"> <?=$fila["nombre"] ?></a></td>
-            <td><a href=   "persona-ficha.php?id=<?=$fila["id"]?>"> <?=$fila["telefono"] ?> </a></td>
-            <td><a href=   "persona-ficha.php?id=<?=$fila["id"]?>"> <?=$fila["categoria_id"] ?> </a></td>
-            <td><a href="persona-eliminar.php?id=<?=$fila["id"]?>"> (X)                   </a></td>
+            <td><a href="persona-ficha.php?id=<?=$fila["pId"]?>"> <?=$fila["pNombre"] ?></a></td>
+            <td><a href="persona-ficha.php?id=<?=$fila["pId"]?>"> <?=$fila["cNombre"] ?></a></td>
+            <td><a href="persona-eliminar.php?id=<?=$fila["pId"]?>"> (X)                   </a></td>
+
         </tr>
     <tr>
 
