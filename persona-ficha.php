@@ -8,17 +8,25 @@
 
  if($nueva_Entrada){
      $personaNombre = "<introduzca un nombre>";
+     $apellidos = "<Introduzca los apellidos>";
      $telefono= "<Introduzca un telefono>";
-     $categoria_id= "<Introduce el id de la categoria>";
+     $categoriaId= "<Introduce el id de la categoria>";
+
  }else{
-     $sql = "SELECT nombre, telefono , categoria_id FROM persona WHERE id=?";
+     $sql = "SELECT nombre,apellidos, telefono , categoriaId FROM persona WHERE id=?";
      $select = $conexion ->prepare($sql);
      $select ->execute([$id]);
      $rs = $select ->fetchAll();
 
      $personaNombre= $rs[0]["nombre"];
-     $personaNombre= $rs[0]["telefono"];
-     $personaNombre= $rs[0]["categoria_id"];
+     $apellidos= $rs[0]["apellidos"];
+     $telefono= $rs[0]["telefono"];
+     $categoriaId= $rs[0]["categoriaId"];
+
+     $sqlCategoria = "SELECT nombre FROM categoria WHERE id=?";
+     $select2 = $conexion->prepare($sqlCategoria);
+     $select2 ->execute([$categoriaId]);
+     $rs2 = $select2->fetchAll();
  }
 
 ?>
@@ -40,8 +48,21 @@
     <li>
         <p>Nombre:</p>
         <input type="text" name="nombre" value="<?=$personaNombre?>">
+        <input type="text" name="apellidos" value="<?=$apellidos?>">
         <input type="text" name="telefono" value="<?=$telefono?>">
-        <input type="text" name="categoria_id" value="<?=$categoria_id?>">
+        <input type="text" name="categoriaId" value="<?=$categoriaId?>">
+<?php /*
+ <select>
+     <option value="-1" name="Selecciona un campo"></option>
+
+        <?php  foreach($rs2 as $categoriaId=> $fila2 ){
+            $categoria_nombre = $fila2["nombre"];
+       echo " <option value='$categoriaId'>$categoria_nombre</option> ";
+
+        }?>
+
+ </select>
+*/ ?>
     </li>
 
 </ul>

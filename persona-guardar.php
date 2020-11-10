@@ -4,17 +4,18 @@ $conexion=obtenerPdoConexionBD();
 
 $id= (int)$_REQUEST["id"];
 $nombre= $_REQUEST["nombre"];
+$apellidos= $_REQUEST["apellidos"];
 $telefono = $_REQUEST["telefono"];
-$categoria_id=$_REQUEST["categoria_id"];
+$categoriaId= (int)$_REQUEST["categoriaId"];
 
 $nuevaEntrada= ($id== -1);
 
 if($nuevaEntrada){
-    $sql= "INSERT INTO persona (nombre,telefono,categoria_id) VALUES(?,?,?) ";
-    $parametros = [$nombre,$telefono,$categoria_id];
+    $sql= "INSERT INTO persona (nombre,apellidos,telefono,categoriaId) VALUES(?,?,?,?)";
+    $parametros = [$nombre,$apellidos,$telefono,$categoriaId];
 }else{
-    $sql= "UPDATE persona SET nombre=?,telefono=?,categoria_id=? WHERE id=?";
-    $parametros = [$nombre,$telefono,$categoria_id,$id];
+    $sql= "UPDATE persona SET nombre=?,apellidos=?,telefono=?,categoriaId=? WHERE id=?";
+    $parametros = [$nombre,$apellidos,$telefono,$categoriaId,$id];
 }
 
 $sentencia = $conexion->prepare($sql);
