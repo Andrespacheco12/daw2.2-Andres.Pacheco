@@ -11,9 +11,9 @@
      $apellidos = "<Introduzca los apellidos>";
      $telefono= "<Introduzca un telefono>";
      $categoriaId= "<Introduce el id de la categoria>";
-
+     $estrella = false;
  }else{
-     $sql = "SELECT nombre,apellidos, telefono , categoriaId FROM persona WHERE id=?";
+     $sql = "SELECT * FROM persona WHERE id=?";
      $select = $conexion ->prepare($sql);
      $select ->execute([$id]);
      $rs = $select ->fetchAll();
@@ -22,6 +22,8 @@
      $apellidos= $rs[0]["apellidos"];
      $telefono= $rs[0]["telefono"];
      $categoriaId= $rs[0]["categoriaId"];
+     $estrella = ($rs[0]["estrella"]==1);
+
 
      $sqlCategoria = "SELECT nombre FROM categoria WHERE id=?";
      $select2 = $conexion->prepare($sqlCategoria);
@@ -51,6 +53,7 @@
         <input type="text" name="apellidos" value="<?=$apellidos?>">
         <input type="text" name="telefono" value="<?=$telefono?>">
         <input type="text" name="categoriaId" value="<?=$categoriaId?>">
+        <input type="checkbox" name="estrella" <?=$estrella ? "checked" : "" ?> />
 <?php /*
  <select>
      <option value="-1" name="Selecciona un campo"></option>
