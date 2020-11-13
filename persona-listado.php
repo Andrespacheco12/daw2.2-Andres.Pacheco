@@ -1,8 +1,15 @@
 <?php
    require_once "_varios.php";
    $conexion= obtenerPdoConexionBD();
-   //$where = " WHERE pEstrella = 1";
-$sql = " 
+  $clausulaWhere= "";
+
+  $favorito= (isset($_REQUEST["estrella"]));
+       if($favorito ==1){
+       $clausulaWhere = " WHERE p.estrella = 1";
+   }else {
+       $clausulaWhere = "";
+   }
+   $sql = " 
                SELECT
                     p.id        AS pId,
                     p.nombre    AS pNombre,
@@ -13,10 +20,10 @@ $sql = "
                    
                 FROM
                    persona AS p INNER JOIN categoria AS c
-                   ON p.categoriaId = c.id
+                   ON p.categoriaId = c.id $clausulaWhere
                 ORDER BY p.nombre
          ";
-// . $where ;
+
 
 $sentencia= $conexion->prepare($sql);
    $sentencia->execute([]);
@@ -48,8 +55,11 @@ $sentencia= $conexion->prepare($sql);
     ?>
 
             <td><a href="persona-ficha.php?id=<?=$fila["pId"]?>"> <?=$fila["pNombre"] ?></a></td>
-         <td><a href='personaEstablecerEstadoEstrella.php?$parametroEstrella'><img src='<?=$urlImagen?>' width='16' height='16'></a></td>
-
+  <?php if($favorito ==0){ ?>
+         <td><a href='personaEstablecerEstadoEstrella.php?$favorito=0'><img src='<?=$urlImagen?>' width='16' height='16'></a></td>
+    <?php }else{?>
+    <td><a href='personaEstablecerEstadoEstrella.php?$favorito=1'><img src='<?=$urlImagen?>' width='16' height='16'></a></td>
+   <?php } ?>
             <td><a href="persona-ficha.php?id=<?=$fila["pId"]?>"> <?=$fila["cNombre"] ?></a></td>
             <td><a href="persona-ficha.php?id=<?=$fila["pId"]?>"> <?=$fila["pEstrella"] ?></a></td>
             <td><a href="persona-eliminar.php?id=<?=$fila["pId"]?>"> (X)                   </a></td>
