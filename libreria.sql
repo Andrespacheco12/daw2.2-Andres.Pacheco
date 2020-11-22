@@ -79,7 +79,7 @@ TRUNCATE TABLE `libro`;
 -- Volcado de datos para la tabla `persona`
 --
 
-INSERT INTO `libro` (`id`, `nombre`, `editorial`,`ISBN`, `establecimiento_id`) VALUES
+INSERT INTO `libro` (`id`, `nombre`, `editorial`,`ISBN`, `reservado`,`establecimiento_id`) VALUES
 (1, 'pelea de estrellas', 'bruno','334523861-7',1, 2),
 (4, 'la tormenta misteriosa', 'edebe','20976738492-8',0, 1),
 (5, 'la ciudad perdida', 'salvat','457642801-2',0, 5),
