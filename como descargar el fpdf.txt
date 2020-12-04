@@ -1,0 +1,1 @@
+para poder usar la libreria fpdf hay que descaegar el paquete fpdf desde la propia pagina web que lo contiene www.fpdf.org ir a descargas y descargar la ultima versión de la libreria, luego extraer este zip en la carpeta donde tenemos el document root de apache y para poder usar lo que yo prepare cambiar el nombre de la carpeta a fpdf solo quitando los numeros
