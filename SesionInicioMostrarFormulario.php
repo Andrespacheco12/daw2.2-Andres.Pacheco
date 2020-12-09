@@ -24,6 +24,7 @@
 </form>
 
 <a href="ContenidoPublico1.php">Accede al contenido público</a>
+<a href="ContenidoPrivado1.php">Accede al contenido privado</a>
 </body>
 
 </html>

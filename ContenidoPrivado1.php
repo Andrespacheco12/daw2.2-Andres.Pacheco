@@ -10,7 +10,7 @@
 
 
 //mirar esto me lo hace al reves
-    if ( haySesionIniciada() == true) {
+    if ( haySesionIniciada() == false) {
         redireccionar("SesionInicioMostrarFormulario.php");
     }
 

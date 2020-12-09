@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+session_start();
+
 function obtenerPdoConexionBD(): PDO
 {
     $servidor = "localhost";
@@ -67,7 +69,7 @@ function haySesionIniciada()//: boolean
 {
     // TODO Pendiente hacer la comprobación.
 
-    if (isset($_REQUEST["id"])) {
+    if (isset($_SESSION["id"])) {
         return true;
     }else{
         return false;
