@@ -31,7 +31,7 @@ function obtenerUsuario(string $identificador, string $contrasenna): ?array
    $conexion= obtenerPdoConexionBD();
     // TODO Pendiente hacer.
 
-    $sql = "SELECT * FROM usuario WHERE identificador=? AND contrasenna=?";
+    $sql = "SELECT * FROM Usuario WHERE identificador=? AND contrasenna=?";
 
     $select = $conexion  ->prepare($sql);
     $parametros = [$identificador,$contrasenna];
@@ -64,7 +64,80 @@ function marcarSesionComoIniciada(array $arrayUsuario)
 
     // ...
 }
+function hayCookieValida(): bool
+{
+    $conexion = obtenerPdoConexionBD();
+    $identificador = $_SESSION["identificador"];
+    $codigoCookie = $_SESSION["codigoCookie"];
+    // TODO Comprobar si hay una "sesión-cookie" válida:
+    if (isset($_COOKIE['identificador'] ) && isset($_COOKIE['codigoCookie']))   {
+        $sql = "SELECT * FROM usuario WHERE identificador=? && BINARY codigoCookie=? ";
+        $select = $conexion ->prepare($sql);
+        $parametros= [$identificador,$codigoCookie];
 
+        $select ->execute($parametros);
+        $rs = $select ->fetchAll();
+        $identificador = $rs[0]["identificador"];
+        $codigoCookie = $rs[0]["cookie"];
+        $unaFilaAfectada =( $select->rowCount()==1);
+        if($unaFilaAfectada){
+            return true;
+        }else{
+            return false;
+        }
+        setcookie("identificador", $identificador, time()-3600);
+        setcookie("codigoCookie", $codigoCookie, time()-3600);
+    }return false;
+
+    //   - Ver que vengan DOS cookies "identificador" y "codigoCookie".
+    //   - BD: SELECT ... WHERE identificador=? AND BINARY codigoCookie=?
+    //   - ¿Ha venido un registro? (Igual que el inicio de sesión)
+    //   - IMPORTANTE: si las cookies NO eran válidas, tenemos que borrárselas.
+}
+function generarCookieRecordar(array $arrayUsuario)
+{
+    $conexion = obtenerPdoConexionBD();
+    // Creamos un código cookie muy complejo (no necesariamente único).
+    $codigoCookie = generarCadenaAleatoria(32); // Random...
+
+    // TODO guardar código en BD
+    $sql = "UPDATE Usuario SET codigoCookie=? WHERE identificador=?";
+    $parametros = [$codigoCookie, $arrayUsuario[1]];
+    $sentencia = $conexion->prepare($sql);
+    $sqlCorrecto = $sentencia->execute($parametros);
+
+
+    // TODO Para una seguridad óptima convendría anotar en la BD la fecha de caducidad de la cookie y no aceptar ninguna cookie pasada dicha fecha.
+    setcookie("identificador", $arrayUsuario[1], time()+3600);
+    setcookie("codigoCookie", $codigoCookie, time()+3600);
+    // TODO Enviamos al cliente, en forma de cookies, el identificador y el codigoCookie: setcookie(...) ...
+}
+    function borrarCookieRecordar(array $arrayUsuario)
+    {
+        $conexion=obtenerPdoConexionBD();
+        // TODO Eliminar el código cookie de nuestra BD.
+    $sql = "SELECT codigoCookie FROM usuario WHERE identificador=?";
+
+        $sql2 = "UPDATE usuario SET codigoCookie='NULL' WHERE identificador=?";
+        $select = $conexion ->prepare($sql);
+        $select ->execute([$arrayUsuario[1]]);
+        $rs = $select ->fetchAll();
+        $identificador = $rs[0]["identificador"];
+        $codigoCookie = $rs[0]["cookie"];
+
+        $select2 = $conexion ->prepare($sql2);
+        $select2 ->execute([$arrayUsuario[1]]);
+
+        // TODO Pedir borrar cookie (setcookie con tiempo time() - negativo...)
+        setcookie("identificador", $identificador, time()-3600);
+        setcookie("codigoCookie", $codigoCookie, time()-3600);
+    }
+
+    function generarCadenaAleatoria(int $longitud): string
+{
+    for ($s = '', $i = 0, $z = strlen($a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789')-1; $i != $longitud; $x = rand(0,$z), $s .= $a[$x], $i++);
+    return $s;
+}
 function haySesionIniciada()//: boolean
 {
     // TODO Pendiente hacer la comprobación.

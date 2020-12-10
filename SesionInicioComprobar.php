@@ -12,9 +12,11 @@ $arrayUsuario = obtenerUsuario($identificador, $contrasenna);
 if ($arrayUsuario) { // HAN venido datos: identificador existía y contraseña era correcta.
     // TODO Llamar a marcarSesionComoIniciada($arrayUsuario) ...
 marcarSesionComoIniciada($arrayUsuario);
+generarCookieRecordar($arrayUsuario);
 redireccionar("ContenidoPrivado1.php");
     // TODO Redirigir.
 } else {
     // TODO Redirigir.
+
     redireccionar("SesionInicioMostrarFormulario.php");
 }

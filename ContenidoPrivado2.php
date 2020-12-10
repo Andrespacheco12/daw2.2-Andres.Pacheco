@@ -1,7 +1,7 @@
 <?php
 require_once "_Varios.php";
 
-if (!haySesionIniciada()) {
+if (!haySesionIniciada() && !hayCookieValida()) {
     redireccionar("SesionInicioMostrarFormulario.php");
 }
 
