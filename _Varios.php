@@ -67,10 +67,19 @@ function marcarSesionComoIniciada(array $arrayUsuario)
 function hayCookieValida(): bool
 {
     $conexion = obtenerPdoConexionBD();
-    $identificador = $_SESSION["identificador"];
-    $codigoCookie = $_SESSION["codigoCookie"];
+
+$identificador = $_COOKIE['identificador'];
+$codigoCookie = $_COOKIE['codigoCookie'];
     // TODO Comprobar si hay una "sesión-cookie" válida:
-    if (isset($_COOKIE['identificador'] ) && isset($_COOKIE['codigoCookie']))   {
+
+     if(isset($_SESSION['identificador'])){
+
+         // Hacer la comprobacion interna de si vienen cookies
+
+         /* if (isset($_COOKIE['identificador'] ) && isset($_COOKIE['codigoCookie']))   {*/
+        $identificador = $_SESSION["identificador"];
+        $codigoCookie = $_SESSION["codigoCookie"];
+
         $sql = "SELECT * FROM usuario WHERE identificador=? && BINARY codigoCookie=? ";
         $select = $conexion ->prepare($sql);
         $parametros= [$identificador,$codigoCookie];
@@ -85,9 +94,11 @@ function hayCookieValida(): bool
         }else{
             return false;
         }
-        setcookie("identificador", $identificador, time()-3600);
-        setcookie("codigoCookie", $codigoCookie, time()-3600);
-    }return false;
+
+    }
+    setcookie("identificador", $identificador, time()-3600);
+    setcookie("codigoCookie", $codigoCookie, time()-3600);
+    return false;
 
     //   - Ver que vengan DOS cookies "identificador" y "codigoCookie".
     //   - BD: SELECT ... WHERE identificador=? AND BINARY codigoCookie=?
@@ -112,21 +123,22 @@ function generarCookieRecordar(array $arrayUsuario)
     setcookie("codigoCookie", $codigoCookie, time()+3600);
     // TODO Enviamos al cliente, en forma de cookies, el identificador y el codigoCookie: setcookie(...) ...
 }
-    function borrarCookieRecordar(array $arrayUsuario)
+    function borrarCookieRecordar()
     {
         $conexion=obtenerPdoConexionBD();
         // TODO Eliminar el código cookie de nuestra BD.
-    $sql = "SELECT codigoCookie FROM usuario WHERE identificador=?";
+        $identificador = $_SESSION["identificador"];
+    $sql = "SELECT codigoCookie FROM /*en casa es usuario */ Usuario WHERE identificador=?";
 
-        $sql2 = "UPDATE usuario SET codigoCookie='NULL' WHERE identificador=?";
+        $sql2 = "UPDATE /*en casa es usuario */Usuario SET codigoCookie=null WHERE identificador=?";
         $select = $conexion ->prepare($sql);
-        $select ->execute([$arrayUsuario[1]]);
+        $select ->execute([$identificador]);
         $rs = $select ->fetchAll();
-        $identificador = $rs[0]["identificador"];
-        $codigoCookie = $rs[0]["cookie"];
+       // $identificador = $rs[0]["identificador"];
+        $codigoCookie = $rs[0]["codigoCookie"];
 
         $select2 = $conexion ->prepare($sql2);
-        $select2 ->execute([$arrayUsuario[1]]);
+        $select2 ->execute([$identificador]);
 
         // TODO Pedir borrar cookie (setcookie con tiempo time() - negativo...)
         setcookie("identificador", $identificador, time()-3600);
