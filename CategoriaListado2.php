@@ -1,9 +1,7 @@
 <?php
-require_once "dao.php";
-
-
-$rs =DAO::devuelveTodasCategorias("SELECT id, nombre FROM categoria ORDER BY nombre");
-
+    require_once "dao.php";
+    require_once "clases.php";
+   $categorias= DAO::categoriaObtenerTodas();
 ?>
 
 
@@ -27,10 +25,10 @@ $rs =DAO::devuelveTodasCategorias("SELECT id, nombre FROM categoria ORDER BY nom
     </tr>
 
     <?php
-    foreach ($rs as $fila) { ?>
+    foreach ($categorias as $categoria) { ?>
         <tr>
-            <td><a href=   "CategoriaFicha2.php?id=<?=$fila["id"]?>"> <?=$fila["nombre"] ?> </a></td>
-            <td><a href="CategoriaEliminar2.php?id=<?=$fila["id"]?>"> (X)                   </a></td>
+            <td><a href="CategoriaFicha2.php?id=<?=$categoria->getId()?>"> <?=$categoria ->getNombre() ?> </a></td>
+            <td><a href="CategoriaEliminar2.php?id=<?=$categoria->getId()?>"> (X)</a></td>
         </tr>
     <?php } ?>
 
@@ -38,7 +36,7 @@ $rs =DAO::devuelveTodasCategorias("SELECT id, nombre FROM categoria ORDER BY nom
 
 <br />
 
-<a href="CategoriaFicha2.php ?id=-1">Crear entrada</a>
+<a href="CategoriaFicha2.php?id=-1">Crear entrada</a>
 
 <br />
 <br />
