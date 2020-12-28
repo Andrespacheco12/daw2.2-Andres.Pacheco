@@ -41,7 +41,7 @@
 <br />
 <br />
 
-<a href="persona-listado.php">Gestionar listado de Personas</a>
+<a href="personaListado2.php">Gestionar listado de Personas</a>
 
 </body>
 

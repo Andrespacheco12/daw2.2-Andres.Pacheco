@@ -40,16 +40,38 @@ class DAO
         return $rs;
     }
 */
-    private static function ejecutarConsulta(string $sql, array $id): array
+    public static function ejecutarConsulta(string $sql, array $id): array
     {
         if (!isset(Self::$pdo)) Self::$pdo = Self::obtenerPdoConexionBd();
 
         $select = Self::$pdo->prepare($sql);
         $select->execute($id);
-        $rs = $select->fetchAll();
+
+        return $select->fetchAll();
+    }
+    public static function categoriaFicha(){
+
+        $id= (int)$_REQUEST["id"];
+
+        if (!isset(self::$pdo)) self::$pdo = self::obtenerPdoConexionBd();
+
+      $rs=  self::ejecutarConsulta("SELECT nombre FROM categoria WHERE id=?",[$id]);
+
+      return $rs;
+    }
+
+    public static function personaFicha(){
+
+        $id= (int)$_REQUEST["id"];
+
+        if (!isset(self::$pdo)) self::$pdo = self::obtenerPdoConexionBd();
+
+        $rs=  self::ejecutarConsulta("SELECT * FROM persona WHERE id=?",[$id]);
 
         return $rs;
     }
+
+
     private static function ejecutarConsultaNormal(string $sql, array $id)
     {
         if (!isset(Self::$pdo)) Self::$pdo = Self::obtenerPdoConexionBd();
@@ -63,6 +85,28 @@ class DAO
     {
         return new Categoria($fila["id"], $fila["nombre"]);
     }
+
+    private static function personaCrearDesdeRs(array $fila): Persona
+    {
+        return new Persona($fila["id"], $fila["nombre"], $fila["apellidos"], $fila["telefono"], $fila["estrella"], $fila["categoriaId"]);
+    }
+
+    public static function personaObtenerTodas(): array
+    {
+        $datos = [];
+        $rs = self::ejecutarConsulta(
+            "SELECT * FROM persona ORDER BY nombre",
+            []
+        );
+
+        foreach ($rs as $fila) {
+            $persona = self::personaCrearDesdeRs($fila);
+            array_push($datos, $persona);
+        }
+
+        return $datos;
+    }
+
 
     public static function categoriaObtenerTodas(): array
     {
@@ -96,9 +140,55 @@ class DAO
         self::ejecutarConsultaNormal("DELETE FROM categoria WHERE id=?",
             [$id]);
     }
-    public static function categoriaGuardar()
+    public static function personaEliminar(int $id)
     {
 
+        if (!isset(Self::$pdo)) Self::$pdo = Self::obtenerPdoConexionBd();
+
+        self::ejecutarConsultaNormal("DELETE FROM persona WHERE id=?",
+            [$id]);
+    }
+    public static function categoriaGuardar()
+    {
+        $nombre = $_REQUEST["nombre"];
+
+        if (!isset(self::$pdo)) self::$pdo = self::obtenerPdoConexionBd();
+
+        self::ejecutarConsultaNormal("INSERT INTO categoria (nombre) VALUES (?)",[$nombre]);
+    }
+
+    public static function personaGuardar()
+    {
+        $nombre= $_REQUEST["nombre"];
+        $apellidos= $_REQUEST["apellidos"];
+        $telefono = $_REQUEST["telefono"];
+        $categoriaId= (int)$_REQUEST["categoriaId"];
+        $estrella = ISSET($_REQUEST["estrella"]);
+
+        if (!isset(self::$pdo)) self::$pdo = self::obtenerPdoConexionBd();
+
+        self::ejecutarConsultaNormal("INSERT INTO persona (nombre,apellidos,telefono,estrella,categoriaId) VALUES (?,?,?,?,?)",[$nombre,$apellidos,$telefono,$estrella?1:0,$categoriaId]);
+    }
+    public static function categoriaModificar()
+    {
+        $id = (int)$_REQUEST["id"];
+        $nombre = $_REQUEST["nombre"];
+
+        if (!isset(self::$pdo)) self::$pdo = self::obtenerPdoConexionBd();
+        self::ejecutarConsultaNormal("UPDATE categoria SET nombre=? WHERE id=?",[$nombre,$id]);
+    }
+
+    public static function personaModificar()
+    {
+        $id = (int)$_REQUEST["id"];
+        $nombre= $_REQUEST["nombre"];
+        $apellidos= $_REQUEST["apellidos"];
+        $telefono = $_REQUEST["telefono"];
+        $categoriaId= (int)$_REQUEST["categoriaId"];
+        $estrella = ISSET($_REQUEST["estrella"]);
+
+        if (!isset(self::$pdo)) self::$pdo = self::obtenerPdoConexionBd();
+        self::ejecutarConsultaNormal("UPDATE persona SET nombre=?,apellidos=?,telefono=?,estrella=?,categoriaId=? WHERE id=?",[$nombre,$apellidos,$telefono,$estrella?1:0,$categoriaId,$id]);
     }
 
     private static function ejecutarActualizacion(string $sql, array $parametros): void

@@ -13,9 +13,9 @@
 	if ($nueva_entrada) { // Quieren CREAR una nueva entrada, así que no se cargan datos.
 		$categoria_nombre = "<introduzca nombre>";
 	} else { // Quieren VER la ficha de una categoría existente, cuyos datos se cargan.
-	    $sql = "SELECT nombre FROM categoria WHERE id=?";
 
-   $rs= DAO::ejecutarConsulta("SELECT nombre FROM categoria WHERE id=?",$id);
+
+   $rs= DAO::categoriaFicha();
 
 		 // Con esto, accedemos a los datos de la primera (y esperemos que única) fila que haya venido.
 		$categoria_nombre = $rs[0]["nombre"];

@@ -1,5 +1,13 @@
 <?php
+require_once "_Varios.php";
+$conexion=obtenerPdoConexionBD();
 
-// Actualizar estrella en BD.
+$id=$_REQUEST["id"];
 
-redireccionar("personaListado.php");
+$sql = "UPDATE persona SET estrella = (NOT (SELECT estrella FROM persona WHERE id=?)) WHERE id=?";
+$parametros = [$id,$id];
+
+$sentencia = $conexion->prepare($sql);
+$sentencia->execute($parametros);
+
+redireccionar("personaListado2.php");
