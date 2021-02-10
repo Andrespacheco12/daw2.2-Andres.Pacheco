@@ -51,7 +51,7 @@ class DAO
         $sqlConExito = $actualizacion->execute($parametros);
 
         if (!$sqlConExito) return null;
-        else return $actualizacion->rowCount();
+        else return self::$pdo->lastInsertId();
     }
 
 
@@ -81,12 +81,14 @@ class DAO
         );
     }
 
-    public static function categoriaCrear(string $nombre)
+    public static function categoriaCrear(string $nombre): Categoria
     {
-        self::ejecutarActualizacion(
+        $idAutogenerado = self::ejecutarActualizacion(
             "INSERT INTO Categoria (nombre) VALUES (?)",
             [$nombre]
         );
+
+        return self::categoriaObtenerPorId($idAutogenerado);
     }
 
     public static function categoriaObtenerTodas(): array
@@ -104,5 +106,13 @@ class DAO
         }
 
         return $datos;
+    }
+    public static function categoriaEliminar(int $id)
+    {
+
+        if (!isset(Self::$pdo)) Self::$pdo = Self::obtenerPdoConexionBd();
+
+        self::ejecutarActualizacion("DELETE FROM categoria WHERE id=?",
+            [$id]);
     }
 }

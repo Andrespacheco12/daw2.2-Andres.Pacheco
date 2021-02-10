@@ -1,35 +1,67 @@
 
 window.onload = inicializaciones;
+var tablaCategorias;
+
+
 
 function inicializaciones() {
+    tablaCategorias = document.getElementById("tablaCategorias");
     cargarTodasLasCategorias();
+
 }
-
+eliminarCategoria();
 function cargarTodasLasCategorias() {
-    // TODO v0.9 Obtener el JSON con UNA categoría.
-    // TODO v1.0 Obtener el JSON con un ARRAY de categorías.
+    var request = new XMLHttpRequest();
 
-
-
-
-    var xmlhttp = new XMLHttpRequest();
-
-    xmlhttp.onreadystatechange = function() {
+    request.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
-           var categoria = JSON.parse(this.responseText);
-          //  alert(categoria.id + categoria.nombre);
-
-            document.getElementById("fila1").innerHTML +=(categoria.id);
-            document.getElementById("fila1.2").innerHTML +=(categoria.nombre);
+            var categorias = JSON.parse(this.responseText);
+            for (var i=0; i<categorias.length; i++) {
+                insertarCategoria(categorias[i]);
+            }
         }
     };
-    xmlhttp.open("GET", "CategoriaObtenerTodas.php", true);
-    xmlhttp.send();
-    // TODO Adaptar/traducir esto a Javascript/DOM/etc.
-    // <?php foreach ($categorias as $categoria) { ?>
-    //     <tr>
-    // <td><a href='CategoriaFicha.php?id=<?=$categoria->getId()?>'>    <?=$categoria->getNombre()?> </a></td>
-    // <td><a href='CategoriaEliminar.php?id=<?=$categoria->getId()?>'> (X)                            </a></td>
-    // </tr>
-    // <?php } ?>
+
+    request.open("GET", "CategoriaObtenerTodas.php");
+    request.send();
 }
+
+function insertarCategoria(categoria) {
+    // TODO Que la categoría se inserte en el lugar que le corresponda según un orden alfabético.
+    // Usar esto: https://www.w3schools.com/jsref/met_node_insertbefore.asp
+
+    var tr = document.createElement("tr");
+    var td = document.createElement("td");
+    var a = document.createElement("a");
+    a.setAttribute("href","CategoriaFicha.php?id=" + categoria.id);
+    var textoContenido = document.createTextNode(categoria.nombre);
+
+    a.appendChild(textoContenido);
+    td.appendChild(a);
+    tr.appendChild(td);
+    tablaCategorias.appendChild(tr);
+}
+
+function eliminarCategoria() {
+
+    var request = new XMLHttpRequest();
+
+    request.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+           var id = JSON.parse(this.responseText);
+            document.getElementById("tablaCategorias").removeChild(tablaCategorias.childNodes[id]);
+
+        }
+    };
+
+    request.open("GET", "CategoriaEliminar.php");
+    request.send();
+}
+
+
+function modificarCategoria(categoria) {
+    // TODO Pendiente de hacer.
+}
+
+// TODO Actualizar lo local si actualizan el servidor. Poner timestamp de modificación en la tabla y pedir categoriaObtenerModificadasDesde(timestamp)
