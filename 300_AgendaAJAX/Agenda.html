@@ -2,7 +2,7 @@
 
 <head>
     <meta charset='UTF-8' />
-    <script src='js/Scripts.js'></script>
+
 </head>
 
 <body>
@@ -14,9 +14,9 @@
 
 
 
-<form>
+<form action="CategoriaCrear.php">
 
-    <input type='text' id='nombre' placeholder='<nombre de la categoría>' value='' />
+    <input type='text' id='nombre' name='nombre' placeholder='<nombre de la categoría>' value='' />
     <label for='nombre'>Nombre</label>
 
     <br>
@@ -25,8 +25,13 @@
 
 </form>
 <form action="CategoriaEliminar.php">
-    <input type="text" id="id" name="id" placeholder="<introduzca el id que quiere borrar>" value=""/>
-   <input type="submit" value="eliminar">
+    <input type='text' id='id' name='id' placeholder='<introduzca el id que quiere borrar>' />
+   <input type="submit" name="eliminaBoton" id="eliminaBoton" value="eliminar">
+</form>
+
+<form action="CategoriaFicha.php">
+    <input type='text' id='identificador' name='identificador' placeholder='<introduzca el id de la persona que quiere ver>' />
+    <input type="submit" name="verFicha" id="verFichaa" value="ver ficha">
 </form>
 
 <table border='1' id='tablaCategorias'>
@@ -34,7 +39,7 @@
         <th>Nombre</th>
     </tr>
 </table>
-
+<button onclick="modificarCategoria()">Modificar categoria</button>
 </body>
-
+<script src='js/Scripts.js'></script>
 </html>

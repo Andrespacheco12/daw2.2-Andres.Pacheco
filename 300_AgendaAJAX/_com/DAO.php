@@ -66,7 +66,7 @@ class DAO
     public static function categoriaObtenerPorId(int $id): ?Categoria
     {
         $rs = self::ejecutarConsulta(
-            "SELECT * FROM Categoria WHERE id=?",
+            "SELECT * FROM categoria WHERE id=?",
             [$id]
         );
         if ($rs) return self::categoriaCrearDesdeRs($rs[0]);
@@ -76,7 +76,7 @@ class DAO
     public static function categoriaActualizar($id, $nombre)
     {
         self::ejecutarActualizacion(
-            "UPDATE Categoria SET nombre=? WHERE id=?",
+            "UPDATE categoria SET nombre=? WHERE id=?",
             [$nombre, $id]
         );
     }
@@ -84,7 +84,7 @@ class DAO
     public static function categoriaCrear(string $nombre): Categoria
     {
         $idAutogenerado = self::ejecutarActualizacion(
-            "INSERT INTO Categoria (nombre) VALUES (?)",
+            "INSERT INTO categoria (nombre) VALUES (?)",
             [$nombre]
         );
 
@@ -96,7 +96,7 @@ class DAO
         $datos = [];
 
         $rs = self::ejecutarConsulta(
-            "SELECT * FROM Categoria ORDER BY nombre",
+            "SELECT * FROM categoria ORDER BY nombre",
             []
         );
 
@@ -112,7 +112,25 @@ class DAO
 
         if (!isset(Self::$pdo)) Self::$pdo = Self::obtenerPdoConexionBd();
 
-        self::ejecutarActualizacion("DELETE FROM categoria WHERE id=?",
+        self::ejecutarActualizacion("DELETE  FROM categoria WHERE id=?",
             [$id]);
+    }
+    public static function categoriaFicha(){
+
+        $id= (int)$_REQUEST["identificador"];
+
+        if (!isset(self::$pdo)) self::$pdo = self::obtenerPdoConexionBd();
+
+        $rs=  self::ejecutarConsulta("SELECT nombre FROM categoria WHERE id=?",[$id]);
+
+        return $rs;
+    }
+    public static function categoriaGuardar()
+    {
+        $nombre = $_REQUEST["nombre"];
+
+        if (!isset(self::$pdo)) self::$pdo = self::obtenerPdoConexionBd();
+
+        self::ejecutarConsultaNormal("INSERT INTO categoria (nombre) VALUES (?)",[$nombre]);
     }
 }
