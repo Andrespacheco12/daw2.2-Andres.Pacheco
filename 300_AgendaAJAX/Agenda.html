@@ -2,6 +2,7 @@
 
 <head>
     <meta charset='UTF-8' />
+    <link rel="stylesheet" href="css/Estilos.css">
 
 </head>
 
@@ -9,37 +10,54 @@
 
 <h1>Súper Agenda FX</h1>
 
-<h2 id='pantalla'>Categorías</h2>
+
+
+<h2>Personas</h2>
+
+<div id="personasTabla">
+    <div id='personasCabecera'>
+        <div>
+            <div>Nombre</div>
+            <div>Eliminar</div>
+        </div>
+    </div>
+    <div id='personasDatos'>
+    </div>
+</div>
 
 
 
+<h2>Categorías</h2>
 
-<form action="CategoriaCrear.php">
+<div id="categoriasTabla">
+    <div id='categoriasCabecera'>
+        <div>
+            <div>Nombre</div>
+            <div>Eliminar</div>
+        </div>
+    </div>
+    <div id='categoriasDatos'>
+    </div>
+</div>
 
-    <input type='text' id='nombre' name='nombre' placeholder='<nombre de la categoría>' value='' />
-    <label for='nombre'>Nombre</label>
 
-    <br>
 
-    <input type='submit' id='submitCrearCategoria' value='Crear categoría' />
+<br>
 
-</form>
-<form action="CategoriaEliminar.php">
-    <input type='text' id='id' name='id' placeholder='<introduzca el id que quiere borrar>' />
-   <input type="submit" name="eliminaBoton" id="eliminaBoton" value="eliminar">
-</form>
+<input type='text' id='personaNombre' placeholder='<nombre de la persona>' value='' />
+<input type='text' id='categoriaId' placeholder='<id de la categoria' value='' />
 
-<form action="CategoriaFicha.php">
-    <input type='text' id='identificador' name='identificador' placeholder='<introduzca el id de la persona que quiere ver>' />
-    <input type="submit" name="verFicha" id="verFichaa" value="ver ficha">
-</form>
+<button id='btnPersonaCrear'>Crear</button>
 
-<table border='1' id='tablaCategorias'>
-    <tr>
-        <th>Nombre</th>
-    </tr>
-</table>
-<button onclick="modificarCategoria()">Modificar categoria</button>
+
+<input type='text' id='categoriaNombre' placeholder='<nombre de la categoría>' value='' />
+<button id='btnCategoriaCrear'>Crear</button>
+
+<br><br>
+
+<button onclick='debug();'>Debug</button>
+
+
 </body>
 <script src='js/Scripts.js'></script>
 </html>

@@ -1,10 +1,7 @@
 <?php
-    require_once "_com/DAO.php";
 
-    $categoria = DAO::categoriaCrear($_REQUEST["nombre"]);
+require_once "_com/DAO.php";
 
-    echo json_encode($categoria);
-    redireccionar("Agenda.html");
-?>
+$categoria = DAO::categoriaCrear($_REQUEST["nombre"]);
 
-
+echo json_encode($categoria);

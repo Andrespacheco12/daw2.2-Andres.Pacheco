@@ -1,10 +1,7 @@
 <?php
-	require_once "_com/DAO.php";
 
-	$id= $_REQUEST["id"];
-	DAO::categoriaEliminar($id);
-	//DAO::categoriaEliminar($id);
-        echo json_encode($id);
-	redireccionar("Agenda.html");
+require_once "_com/DAO.php";
 
-	?>
+$resultado = DAO::categoriaEliminarPorId($_REQUEST["id"]);
+
+echo json_encode($resultado);

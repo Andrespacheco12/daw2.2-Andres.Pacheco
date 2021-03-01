@@ -1,7 +1,5 @@
 <?php
-	require_once "_com/DAO.php";
 
+require_once "_com/DAO.php";
 
-    echo json_encode(DAO::categoriaObtenerTodas());
-
-?>
+echo json_encode(DAO::categoriaObtenerTodas());
