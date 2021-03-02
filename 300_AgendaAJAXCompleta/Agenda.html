@@ -1,0 +1,70 @@
+<html>
+
+<head>
+    <meta charset='UTF-8' />
+    <link rel="stylesheet" href="css/Estilos.css">
+
+</head>
+
+<body>
+
+<h1>Súper Agenda FX</h1>
+
+
+
+<h2>Personas</h2>
+
+<div id="personasTabla">
+    <div id='personasCabecera'>
+        <div>
+            <div>Nombre</div>
+            <div>Apellidos</div>
+            <div>Telefono</div>
+            <div>Estrella</div>
+            <div>Catgoria id</div>
+            <div>Eliminar</div>
+        </div>
+    </div>
+    <div id='personasDatos'>
+    </div>
+</div>
+
+
+
+<h2>Categorías</h2>
+
+<div id="categoriasTabla">
+    <div id='categoriasCabecera'>
+        <div>
+            <div>Nombre</div>
+            <div>Eliminar</div>
+        </div>
+    </div>
+    <div id='categoriasDatos'>
+    </div>
+</div>
+
+
+
+<br>
+
+<input type='text' id='personaNombre' placeholder='<nombre de la persona>' value='' />
+<input type="text" id="personaApellidos" placeholder="<apellidos de la persona>" value="" />
+<input type='text' id='personaTelefono' placeholder='<telefono de la persona>' value='' />
+<input type='text' id='personaEstrella' placeholder='<estrella de la persona>' value='' />
+<input type='text' id='categoriaId' placeholder='<id de la categoria' value='' />
+
+<button id='btnPersonaCrear'>Crear</button>
+
+
+<input type='text' id='categoriaNombre' placeholder='<nombre de la categoría>' value='' />
+<button id='btnCategoriaCrear'>Crear</button>
+
+<br><br>
+
+<button onclick='debug();'>Debug</button>
+
+
+</body>
+<script src='js/Scripts.js'></script>
+</html>
